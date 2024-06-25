@@ -2,74 +2,117 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aprender a cocinar</title>
-
-</head>   
-<style>
-    
-</style> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .high-contrast {
+            background-color: black;
+            color: white;
+        }
+        .large-font {
+            font-size: 1.5em;
+        }
+        .error {
+            border: 2px solid red;
+        }
+    </style>
+    <script type="module" src="./assets/js/script.js"></script>
+    <script type="module" src="./assets/js/firebase.js"></script>
+</head>
 <body>
-
+    <!-- Formulario de registro -->
     <h1>Formulario de registro</h1>
-    <input type="text" id="nombre" placeholder ="Nombre">
-    <input type="text" id="apellido" placeholder ="Apellido">
-    <input type="text" id="rut" placeholder ="Rut">
-    <input type="number" id="telefonocasa" placeholder ="Telefono de Casa">
-    <input type="number" id="celular" placeholder ="Celular">
-    <input type="number" id="edad" placeholder ="Edad">
-    <input type="email" id="correo" placeholder ="Correo">
-    <input type="date" id="fechanacimieneto" placeholder ="Fecha de Nacimiento">
-    <input id="btnRegistrar">Registrar</button>
+    <button id="toggleContrastButton">Cambiar Contraste</button>
+    <button id="toggleFontSizeButton">Cambiar Tamaño de Fuente</button>
+    <form id="registroForm">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="apellido" placeholder="Apellido" required>
+        <input type="text" id="rut" placeholder="Rut" required>
+        <input type="number" id="telefonocasa" placeholder="Teléfono de Casa" required>
+        <input type="number" id="celular" placeholder="Celular" required>
+        <input type="number" id="edad" placeholder="Edad" required>
+        <input type="email" id="correo" placeholder="Correo" required>
+        <input type="date" id="fechanacimiento" placeholder="Fecha de Nacimiento" required>
+        <select id="genero" required>
+            <option value="">Seleccione Género</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+        </select>
+        <textarea id="direccion" placeholder="Dirección" required></textarea>
+        <label>
+            <input type="checkbox" id="acepto" required> Acepto términos y condiciones
+        </label>
+        <button type="button" id="btnRegistrar">Registrar</button>
+    </form>
+    <!-- Agregar el input oculto para almacenar el ID de la persona -->
+    <input type="hidden" id="idPersona">
 
+    <!-- Tabla para mostrar los datos registrados -->
+    <h1>Datos registrados</h1>
     <table id="tPersonas">
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Rut</th>
-                <th>Telefono de Casa</th>
+                <th>Teléfono de Casa</th>
                 <th>Celular</th>
                 <th>Edad</th>
                 <th>Correo</th>
                 <th>Fecha de Nacimiento</th>
-                <th>Actualizar</th>
+                <th>Género</th>
+                <th>Dirección</th>
+                <th>Editar</th>
                 <th>Eliminar</th>
             </tr>
         </thead>
-        <tbody id="tPersonas"></tbody>
+        <tbody id="tbPersonas"></tbody>
     </table>
+
+    <!-- Formulario para modificar datos -->
     <h1>Modificar</h1>
-    <input type="text" id="UPDnombre" placeholder ="Nombre">
-    <input type="text" id="UPDapellido" placeholder ="Apellido">
-    <input type="text" id="UPDrut" placeholder ="Rut">
-    <input type="number" id="UPDtelefonocasa" placeholder ="Telefono de Casa">
-    <input type="text" id="UPDrut" placeholder ="Rut">
-    <input type="number" id="UPDcelular" placeholder ="Celular">
-    <input type="number" id="UPDedad" placeholder ="Edad">
-    <input type="email" id="UPDcorreo" placeholder ="Correo">
-    <input type="date" id="UPDfechanacimieneto" placeholder ="Fecha de Nacimiento">
-    <input id="btnActualizar">Actualizar</button>
+    <form id="formularioModificar">
+        <input type="text" id="UPDnombre" placeholder="Nombre">
+        <input type="text" id="UPDapellido" placeholder="Apellido">
+        <input type="text" id="UPDrut" placeholder="Rut">
+        <input type="number" id="UPDtelefonocasa" placeholder="Teléfono de Casa">
+        <input type="number" id="UPDcelular" placeholder="Celular">
+        <input type="number" id="UPDedad" placeholder="Edad">
+        <input type="email" id="UPDcorreo" placeholder="Correo">
+        <input type="date" id="UPDfechanacimiento" placeholder="Fecha de Nacimiento">
+        <select id="UPDgenero">
+            <option value="">Seleccione Género</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+        </select>
+        <textarea id="UPDdireccion" placeholder="Dirección"></textarea>
+        <button type="button" id="btnActualizar">Actualizar</button>
+    </form>
 
+    <!-- Formulario para confirmar eliminación -->
     <h1>Eliminar</h1>
-    <input type="text" id="DELnombre" placeholder ="Nombre">
-    <input type="text" id="DELapellido" placeholder ="Apellido">
-    <input type="text" id="DELrut" placeholder ="Rut">
-    <input type="number" id="DELtelefonocasa" placeholder ="Telefono de Casa">
-    <input type="number" id="DELcelular" placeholder ="Celular">
-    <input type="number" id="DELedad" placeholder ="Edad">
-    <input type="email" id="DELcorreo" placeholder ="Correo">
-    <input type="date" id="DELfechanacimieneto" placeholder ="Fecha de Nacimiento">
-    <input id="btnEliminar">Eliminar</button>
-
-    <p>El menu de seleccion de la pagina es el siguiente</p>
-    <menu>
-        <li>Objetivos de la pagina</li>
-        <li>Que se espera aprender en la pagina</li>
-        <li>Ingredientes disponibles para cocinar</li>
-        <li>Apredizajes esperados</li>
-        <li>Titulos disponibles a completar un curso</li>
-    </menu>
+    <form id="formularioEliminar">
+        <input type="text" id="DELnombre" placeholder="Nombre" disabled>
+        <input type="text" id="DELapellido" placeholder="Apellido" disabled>
+        <input type="text" id="DELrut" placeholder="Rut" disabled>
+        <input type="number" id="DELtelefonocasa" placeholder="Teléfono de Casa" disabled>
+        <input type="number" id="DELcelular" placeholder="Celular" disabled>
+        <input type="number" id="DELedad" placeholder="Edad" disabled>
+        <input type="email" id="DELcorreo" placeholder="Correo" disabled>
+        <input type="date" id="DELfechanacimiento" placeholder="Fecha de Nacimiento" disabled>
+        <select id="DELgenero" disabled>
+            <option value="">Seleccione Género</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+        </select>
+        <textarea id="DELdireccion" placeholder="Dirección" disabled></textarea>
+        <button type="button" id="btnEliminar">Eliminar</button>
+    </form>
 </body>
 </html>
-
